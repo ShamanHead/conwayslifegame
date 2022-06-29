@@ -5,13 +5,7 @@ export default class Canvas extends React.Component {
         super(props);
 
         this.state = {
-            settings: {
-                widthSet: 1000,
-                heightSet: 1000,
-                colorSet: "black",
-                borderColorSet: "black",
-                borderOnSet: false
-            }, 
+            settings: this.props.startupSettings, 
             interval: null
         }
 

@@ -7,10 +7,7 @@ export default class Menu extends React.Component {
     constructor(props) {
         super(props);
        
-        this.state = {
-            colorSet: "#000",
-            borderColorSet: "#fff"
-        }
+        this.state = this.props.startupSettings 
 
         this.componentRefs = {widthSet: React.createRef(), 
                               heightSet: React.createRef(), 
@@ -46,16 +43,16 @@ export default class Menu extends React.Component {
                 <div className="settings">
                     <div className="settings-part"> 
                         <div>Ширина</div>
-                        <div className>
+                        <div>
                             {this.state.widthSet}
-                            <VolumeSlider min="100" width="200" type="widthSet" max="2000" color={this.state.colorSet} onChange={this.handleInnerChange.bind(this)}/>
+                            <VolumeSlider min="100" start={this.state.widthSet} width="200" type="widthSet" max="2000" color={this.state.colorSet} onChange={this.handleInnerChange.bind(this)}/>
                         </div>
                     </div>
                     <div className="settings-part"> 
                         <div>Высота</div>
-                        <div className>
+                        <div>
                             {this.state.heightSet}
-                            <VolumeSlider min="100" width="200" type="heightSet" max="2000" color={this.state.colorSet} onChange={this.handleInnerChange.bind(this)}/>
+                            <VolumeSlider min="100" start={this.state.heightSet} width="200" type="heightSet" max="2000" color={this.state.colorSet} onChange={this.handleInnerChange.bind(this)}/>
                         </div>
                     </div>
                     <div className="settings-part">

@@ -4,7 +4,7 @@ export default class VolumeSlider extends React.Component {
     constructor(props) {
         super(props)
 
-        this.state = { width: 0, editable: false }
+        this.state = { width: this.props.width / (this.props.max / this.props.start), editable: false }
     }
 
     mouseDownUp() {

@@ -9,7 +9,14 @@ export default class CanvasMenu extends React.Component {
         this.state = ({
             updateCanvas : "",
             onUpdateCanvas: "",
-            generationCount: 0
+            generationCount: 0,
+            settingsCanvas: {
+                widthSet: 1000,
+                heightSet: 1000,
+                colorSet: "#add8e6",
+                borderOnSet: false,
+                borderColorSet: "#000"
+            }
         })
        
         this.setSettingsState = this.setSettingsState.bind(this);
@@ -53,10 +60,12 @@ export default class CanvasMenu extends React.Component {
                 <Canvas setOnUpdate={this.setOnUpdate}
                         canvasState={this.state.updateCanvas}
                         updateGenerationCount={this.updateGenerationCount}
+                        startupSettings={this.state.settingsCanvas}
                 />
                 <Menu setCanvasState={this.setCanvasState}
                       generationCount={this.state.generationCount}
                       setSettingsState={this.setSettingsState}
+                      startupSettings={this.state.settingsCanvas}  
                 /> 
             </div>
         )
