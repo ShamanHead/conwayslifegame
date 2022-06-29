@@ -11,8 +11,8 @@ export default class CanvasMenu extends React.Component {
             onUpdateCanvas: "",
             generationCount: 0,
             settingsCanvas: {
-                widthSet: 1000,
-                heightSet: 1000,
+                widthSet: 10000,
+                heightSet: 10000,
                 colorSet: "#add8e6",
                 borderOnSet: false,
                 borderColorSet: "#000"

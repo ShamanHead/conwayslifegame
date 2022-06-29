@@ -22,7 +22,7 @@ export default class Canvas extends React.Component {
         this.generationCount = 0;
         this.drawGeneration = false;
 
-        this.cells = {active: [], toAdd: [], toDelete: []};
+        this.cells = {active: [], toAdd: [], toDelete: [], activeTest: []};
 
         let screen = {width: this.state.settings.widthSet / this.sizes.width, height: this.state.settings.heightSet / this.sizes.height}; 
 
@@ -67,7 +67,7 @@ export default class Canvas extends React.Component {
     }
 
     clearCells() {
-        this.cells = {active: [], toAdd: [], toDelete: []};
+        this.cells = {active: [], toAdd: [], toDelete: [], activeTest: []};
 
         for(let y = 0;y < this.state.screen.height;y++) {
             this.cells.active[y] = [];
@@ -82,11 +82,12 @@ export default class Canvas extends React.Component {
     }
 
     soup() {
-        for(let y = 0;y < this.state.screen.height;y++) {
-            this.cells.active[y] = [];
-            
+        for(let y = 0;y < this.state.screen.height;y++) { 
             for(let x = 0;x < this.state.screen.width;x++) {
-                this.cells.active[y][x] = Math.floor(Math.random() * 2) ;
+                if(Math.floor(Math.random() * 2) === 1) {
+                   this.cells.active[x][y] = 1;
+                   this.cells.activeTest.push([x,y])
+                }
             }
         }
 
@@ -132,6 +133,8 @@ export default class Canvas extends React.Component {
         this.setState({
             interval: setInterval(() => {this.cycle()}, 0)   
         })
+        
+        //this.cycle();
 
     }
 
@@ -153,10 +156,30 @@ export default class Canvas extends React.Component {
     }
 
     onCell(pos) {
-        this.cells.active[pos[0]][pos[1]] = this.cells.active[pos[0]][pos[1]] === 1 ? 0 : 1; 
+        let found = false;
+        for(let i = 0; i < this.cells.activeTest.length;i++) {
+            let current = this.cells.activeTest[i];
+            if(current[0] === pos[0] && current[1] === pos[1]) {
+                found = i;
+                break;
+            }
+
+        }
+
+        if( found === false ) {
+            this.cells.active[pos[0]][pos[1]] = 1;
+            this.cells.activeTest.push([pos[0], pos[1]]);
+        } else {
+            this.cells.active[pos[0]][pos[1]] = 0;
+            this.cells.activeTest.splice(found, 1);
+        }
+
+        //this.cells.active[pos[0]][pos[1]] = this.cells.active[pos[0]][pos[1]] === 1 ? 0 : 1; 
     }
 
     cycle() {
+        //console.log(this.cells.activeTest);
+        this.cells.activeTest = [];
         this.generationCount++;
         if(this.generationCount % 5 === 0) {
             this.props.updateGenerationCount(this.generationCount);
@@ -192,15 +215,20 @@ export default class Canvas extends React.Component {
                     }
                 }
 
-                if(nbrs === 3) this.cells.toAdd.push([x, y]);
-                if((nbrs < 2 || nbrs > 3) && this.cells.active[x][y] === 1) this.cells.toDelete.push([x, y]);
+                if(( this.cells.active[x][y] === 1 && (nbrs === 3 || nbrs === 2) ) || (nbrs === 3 && this.cells.active[x][y] === 0)) this.cells.activeTest.push([x, y])
 
-                if(nbrs > 0) {
-                    //console.log(nbrs);
-                    // console.log([left, right, top, bottom]);
-                }
+                if(nbrs === 3) this.cells.toAdd.push([x, y]); 
+                if((nbrs < 2 || nbrs > 3) && this.cells.active[x][y] === 1) this.cells.toDelete.push([x, y]); 
             }
         } 
+
+            //console.log(nbrs);
+
+            //if(nbrs === 3) this.cells.toAdd.push([x, y]);
+            //if((nbrs < 2 || nbrs > 3)) this.cells.toDelete.push([y, x]);
+ 
+
+        //console.log(this.cells.toDelete);
 
         for(let i = 0; i < this.cells.toDelete.length;i++) {
             let current = this.cells.toDelete[i];
@@ -228,25 +256,48 @@ export default class Canvas extends React.Component {
          
         let x = 0, y = 0, cellX = 0, cellY = 0; 
 
-         while(x != this.state.settings.widthSet && y != this.state.settings.heightSet) {
-             this.context.beginPath();
-             if(this.cells.active[cellY][cellX] === 1) {
-                 this.context.fillRect(x, y, this.sizes.width, this.sizes.height);
-             } else {
-                 if(this.state.settings.borderOnSet === true) this.context.rect(x,y, this.sizes.width, this.sizes.height);
-                    //console.log(this.state.settings.borderOnSet); 
+        if(this.state.settings.borderOnSet === true){
+            this.context.beginPath()
 
-             }
-             this.context.stroke();
-             x += this.sizes.width;
-             cellX += 1;
-             if(x == this.state.settings.widthSet && y != this.state.settings.heightSet) {
-                 x = 0;
-                 y += this.sizes.height;
-                 cellX = 0;
-                 cellY += 1;
-             } 
-         }
+            for(let y1 = this.sizes.width; y1 < this.state.settings.widthSet;y1+=this.sizes.width) { 
+                    this.context.moveTo(y1, 0);
+                    this.context.lineTo(y1, this.state.settings.heightSet)  
+            }
+
+            for(let x1 = this.sizes.height; x1 < this.state.settings.heightSet;x1+=this.sizes.width) { 
+                    this.context.moveTo(0, x1);
+                    this.context.lineTo(this.state.settings.widthSet, x1)  
+            }
+
+            this.context.stroke();
+        }
+
+        // while(x != this.state.settings.widthSet && y != this.state.settings.heightSet) {
+        //     this.context.beginPath();
+        //     if(this.cells.active[cellY][cellX] === 1) {
+        //         this.context.fillRect(x, y, this.sizes.width, this.sizes.height);
+        //     }
+        //     this.context.stroke();
+        //     x += this.sizes.width;
+        //     cellX += 1;
+        //     if(x == this.state.settings.widthSet && y != this.state.settings.heightSet) {
+        //         x = 0;
+        //         y += this.sizes.height;
+        //         cellX = 0;
+        //         cellY += 1;
+        //     } 
+        // }
+        //
+
+        this.context.beginPath();
+
+
+        for(let i = 0;i < this.cells.activeTest.length;i++) {
+           let current = this.cells.activeTest[i];
+           this.context.fillRect(current[1] * this.sizes.width, current[0] * this.sizes.height, this.sizes.width, this.sizes.height); 
+        }
+
+        this.context.stroke();
     }
 
     clear() {
