@@ -15,7 +15,7 @@ export default class Canvas extends React.Component {
     }         
 
     componentDidMount() { 
-        this.sizes = {width: 10, height: 10};
+        this.sizes = {width: 2, height: 2};
         this.setState({screen: {width: this.state.settings.widthSet / this.sizes.width, height: this.state.settings.heightSet / this.sizes.height}})
         this.mode = 0;
         this.interval = null;
@@ -42,7 +42,8 @@ export default class Canvas extends React.Component {
     }
 
     onUpdateSettings(settings) {
-        this.setState({settings: settings, screen: {width: settings.widthSet / this.sizes.width, height: settings.heightSet / this.sizes.height}}, () => {this.clearCells()});
+        this.setState({settings: settings, screen: {width: settings.widthSet / this.sizes.width, height: settings.heightSet / this.sizes.height}},
+            () => {this.clearCells()});
     }
 
     onUpdateState(props) {
@@ -85,7 +86,7 @@ export default class Canvas extends React.Component {
         for(let y = 0;y < this.state.screen.height;y++) { 
             for(let x = 0;x < this.state.screen.width;x++) {
                 if(Math.floor(Math.random() * 2) === 1) {
-                   this.cells.active[x][y] = 1;
+                   this.cells.active[y][x] = 1;
                    this.cells.activeTest.push([x,y])
                 }
             }
@@ -222,14 +223,6 @@ export default class Canvas extends React.Component {
             }
         } 
 
-            //console.log(nbrs);
-
-            //if(nbrs === 3) this.cells.toAdd.push([x, y]);
-            //if((nbrs < 2 || nbrs > 3)) this.cells.toDelete.push([y, x]);
- 
-
-        //console.log(this.cells.toDelete);
-
         for(let i = 0; i < this.cells.toDelete.length;i++) {
             let current = this.cells.toDelete[i];
 
@@ -272,25 +265,7 @@ export default class Canvas extends React.Component {
             this.context.stroke();
         }
 
-        // while(x != this.state.settings.widthSet && y != this.state.settings.heightSet) {
-        //     this.context.beginPath();
-        //     if(this.cells.active[cellY][cellX] === 1) {
-        //         this.context.fillRect(x, y, this.sizes.width, this.sizes.height);
-        //     }
-        //     this.context.stroke();
-        //     x += this.sizes.width;
-        //     cellX += 1;
-        //     if(x == this.state.settings.widthSet && y != this.state.settings.heightSet) {
-        //         x = 0;
-        //         y += this.sizes.height;
-        //         cellX = 0;
-        //         cellY += 1;
-        //     } 
-        // }
-        //
-
         this.context.beginPath();
-
 
         for(let i = 0;i < this.cells.activeTest.length;i++) {
            let current = this.cells.activeTest[i];
@@ -305,7 +280,6 @@ export default class Canvas extends React.Component {
     } 
 
     render() {
-        //console.log(this.context);
         if(typeof this.root.current !== "undefined" && this.root.current !== null) this.context = this.root.current.getContext("2d");
         
         return (

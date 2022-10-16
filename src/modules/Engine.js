@@ -54,7 +54,7 @@ class Engine {
                 this.update(e.offsetX, e.offsetY);
                 this.draw();
             }
-        }) 
+        })
     }
 
     update(x, y) {

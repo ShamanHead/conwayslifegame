@@ -15,6 +15,14 @@ export default class Menu extends React.Component {
                               borderOnSet: React.createRef(),
                               borderColorSet: React.createRef()
         }
+
+        this.buttons = 
+            [
+                {name: "start", displayName: "Старт"},
+                {name: "stop", displayName: "Стоп"},
+                {name: "clear", displayName: "Очистить"},
+                {name: "soup", displayName: "Сгенерировать"}
+            ];
     }
 
     handleChange(e) {
@@ -26,23 +34,34 @@ export default class Menu extends React.Component {
     }
 
     handleInnerChange(e, type) {
-        this.setState({[ e.currentTarget.getAttribute('changeType')]:e.currentTarget.value }) 
+        if(type) {
+            this.setState({[type]: e}); 
+        } else this.setState(
+            {
+                [ e.currentTarget.getAttribute('changeType')] : e.currentTarget.value 
+            }
+        ); 
     }
 
     render() {
+        let buttons = this.buttons.map((el, index) => {
+            return [<button className="bg-blue-500 mt-7 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" onClick = {() => {this.props.setCanvasState(el.name)}}>
+                {el.displayName}</button>
+];
+        })
+
         return (
             <>
-                <div className="flex w-3/5 mt-2 justify-between">
-                    <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" onClick = {() => {this.props.setCanvasState("start")}}>Старт</button>
-                    <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" onClick = {() => {this.props.setCanvasState("stop")}}>Стоп</button>
-                    <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" onClick = {() => {this.props.setCanvasState("clear")}}>Очистить</button>
-                    <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" onClick = {() => {this.props.setCanvasState("soup")}}>Супчек</button>
+                <div className="flex flex-wrap flex-col items-center md:w-3/6">
+                    <div className="flex flex-col md:flex-row justify-between w-full">
+                        {buttons}
+                    </div>                    
                     <span className="generationCount">{this.props.generationCount}</span>
                 </div>
-                <div className="flex flex-col w-2/3 items-center">
-                    <div className="flex w-full flex-row mt-10 justify-between"> 
+                <div className="flex max-w-4xl w-full md:w-1/2 flex-col items-center">
+                    <div className="flex w-full flex-col items-center md:flex-row mt-10 justify-between"> 
                         <div>Ширина</div>
-                        <div>
+                        <div className="w-2/3 flex flex-col items-center md:items-baseline md:w-1/2 md:max-w-xs">
                             {this.state.widthSet}
                             <input
                                 type="range"
@@ -64,9 +83,9 @@ export default class Menu extends React.Component {
                             /> 
                         </div>
                     </div>
-                    <div className="flex w-full flex-row mt-10 justify-between"> 
+                    <div className="flex w-full flex-col items-center md:flex-row mt-10 justify-between"> 
                         <div>Высота</div>
-                        <div>
+                        <div className="w-2/3 flex flex-col items-center md:items-baseline md:w-1/2 md:max-w-xs">
                             {this.state.heightSet}
                             <input
                                 type="range"
@@ -89,19 +108,19 @@ export default class Menu extends React.Component {
 
                         </div>
                     </div>
-                    <div className="flex w-full flex-row mt-10 justify-between">
+                    <div className="flex w-full flex-col items-center md:flex-row mt-10 justify-between">
                         <div>Граница</div>
                         <div>
-                            <input type="checkbox" id="borderOn" name="borderOnSet" onChange = {(e) => {this.handleChange(e)}}/>
+                            <input type="checkbox" id="borderOn" class="form-input" name="borderOnSet" onChange = {(e) => {this.handleChange(e)}}/>
                         </div>
                     </div>
-                    <div className="flex w-full flex-row mt-10 justify-between">
+                    <div className="flex w-full flex-col items-center md:flex-row mt-10 justify-between">
                         <div>Цвет границы</div>
                         <div>
                             <HexColorPicker color={this.state.borderColorSet} onChange={(e) => {this.handleInnerChange(e, "borderColorSet")}}/>
                         </div>
                     </div>
-                    <div className="flex w-full flex-row mt-10 justify-between">
+                    <div className="flex w-full flex-col items-center md:flex-row mt-10 justify-between">
                         <div>Цвет клетки</div>
                         <div>
                             <HexColorPicker color={this.state.colorSet} onChange={(e) => {this.handleInnerChange(e, "colorSet")}}/>
@@ -117,7 +136,7 @@ export default class Menu extends React.Component {
                                     fontSize: "1.1em",
                                     color: this.state.colorSet,
                                     border: `5px solid ${this.state.colorSet}`}}>
-                            Отправить
+                            Применить 
                         </button>
                     </div>
                 </div>
