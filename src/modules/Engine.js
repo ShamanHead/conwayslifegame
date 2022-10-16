@@ -61,18 +61,13 @@ class Engine {
         let pos = [Math.floor( (x - 1) / this.sizes.width), Math.floor( (y - 1 ) / this.sizes.height)]; 
 
         this.onCell(pos);
-        //console.log((x / (this.sizes.width)));
     }
 
     onCell(pos) {
         this.cells.active[pos[0]][pos[1]] = this.cells.active[pos[0]][pos[1]] === 1 ? 0 : 1;
-       // console.log(this.cells.active);
     }
 
     cycle() {
-        //console.log("da");
-        this.generationCount++;
-        document.getElementsByClassName("generationCount")[0].innerHTML = this.generationCount;
         for(let y = 0; y < this.screen.height;y++) {
             for(let x = 0;x < this.screen.width;x++) {
                 let curCell = this.cells.active[y][x],
@@ -92,23 +87,12 @@ class Engine {
                     bottom = this.cells.active[x].length - 1;
                 }
 
-                //console.log(this.cells[x].length);
-
-                //console.log([left, right, bottom, top]);
-
                 for(let y1 = top; y1 <= bottom; y1++) {
                     for(let x1 = left; x1 <= right; x1++) {
                         if(x1 === x && y1 === y) continue;
 
-                        //typeof this.cells[x1][y1] == 'undefined' ? console.log
-                        //([this.cells[x1][y1], x1, y1, left, right, this.cells[x].length]) : null;
-                       //console.log({x1: x1, y1: y1, x: x, y: y, left: left, right: right, top: top, bottom: bottom, nbrs: nbrs});     
-                        //console.log(changed);
-
                         if(this.cells.active[x1][y1] === 1) {
                             nbrs++;
-                            //console.log({x1: x1, y1: y1, x: x, y: y, left: left, right: right, top: top, bottom: bottom, nbrs: nbrs});
-                            //console.log([left, right, top, bottom]);
                         }
                     }
                 }
@@ -135,20 +119,19 @@ class Engine {
             this.cells.active[current[0]][current[1]] = 1;
         }
 
-        //console.log(this.cells.toDelete);    
-        //console.log(this.cells.toAdd)
-
         this.cells.toAdd = [];
         this.cells.toDelete = [];
-
-        this.clear();
-        this.draw();
+        
+        if(this.generationCount % 50 == 0) {
+            this.generationCount++;
+            document.getElementsByClassName("generationCount")[0].innerHTML = this.generationCount;
+            this.clear();
+            this.draw();
+        }
     }
 
     draw() {
         let x = 0, y = 0, cellX = 0, cellY = 0;
-
-        //console.log(this.cells.active);
 
          while(x != this.root.width && y != this.root.height) {
              this.context.beginPath();

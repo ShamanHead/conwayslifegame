@@ -1,5 +1,6 @@
 import CanvasMenu from './modules/CanvasMenu';
-import './css/CanvasMenu.css'
+import './css/index.css'
+import './css/CanvasMenu.scss'
 
 function App() {
   return (

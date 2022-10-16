@@ -11,8 +11,8 @@ export default class CanvasMenu extends React.Component {
             onUpdateCanvas: "",
             generationCount: 0,
             settingsCanvas: {
-                widthSet: 10000,
-                heightSet: 10000,
+                widthSet: 200,
+                heightSet: 200,
                 colorSet: "#add8e6",
                 borderOnSet: false,
                 borderColorSet: "#000"
@@ -56,7 +56,7 @@ export default class CanvasMenu extends React.Component {
 
     render() {
         return (
-            <div className="canvas-menu">
+            <div className="canvas-menu w-full flex items-center flex-col">
                 <Canvas setOnUpdate={this.setOnUpdate}
                         canvasState={this.state.updateCanvas}
                         updateGenerationCount={this.updateGenerationCount}
