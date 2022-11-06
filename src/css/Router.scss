@@ -1,0 +1,19 @@
+.router {
+    background-color: #53687E;
+    padding: 1% 0 0 0.5%;
+    min-width: 250px;
+
+    &-name {
+        font-family: 'bungee';
+    }
+
+    &-item {
+        margin-bottom: 2%;
+
+        svg {
+            width: 35px;
+            height: 35px;
+            margin-right: 3%;
+        }
+    }
+}
