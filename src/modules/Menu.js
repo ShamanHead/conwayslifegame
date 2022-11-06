@@ -16,10 +16,26 @@ export default class Menu extends React.Component {
 
         this.buttons = 
             [
-                {name: "start", displayName: "Старт"},
-                {name: "stop", displayName: "Стоп"},
-                {name: "clear", displayName: "Очистить"},
-                {name: "soup", displayName: "Сгенерировать"}
+                {
+                    name: "start",
+                    displayName: "Старт",
+                    icon: [<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>]
+                },
+                {
+                    name: "stop",
+                    displayName: "Стоп",
+                    icon: [<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 10a1 1 0 011-1h4a1 1 0 011 1v4a1 1 0 01-1 1h-4a1 1 0 01-1-1v-4z"></path></svg>]
+                },
+                {
+                    name: "clear",
+                    displayName: "Очистить",
+                    icon: [<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path></svg>]
+                },
+                {
+                    name: "soup",
+                    displayName: "Сгенерировать",
+                    icon: [<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z"></path></svg>]
+                }
             ];
     }
 
@@ -42,82 +58,19 @@ export default class Menu extends React.Component {
     }
 
     render() {
-        let buttons = this.buttons.map((el, index) => {
-            return [<button className="bg-blue-500 mt-7 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" onClick = {() => {this.props.setCanvasState(el.name)}}>
-                {el.displayName}</button>
-];
+        let buttons = this.buttons.map((el) => {
+            return [<div class="button-icon" onClick = {() => {this.props.setCanvasState(el.name)}}>{el.icon}</div>]
         })
 
         return (
             <>
                 <div className="flex flex-wrap flex-col items-center md:w-3/6">
-                    <div className="flex flex-col md:flex-row justify-between w-full">
+                    <div className="flex w-52 justify-between">
                         {buttons}
                     </div>                    
                     <span className="generationCount">{this.props.generationCount}</span>
                 </div>
                 <div className="flex max-w-4xl w-full md:w-1/2 flex-col items-center">
-                    <div className="flex w-full flex-col items-center md:flex-row mt-10 justify-between"> 
-                        <div>Ширина</div>
-                        <div className="w-2/3 flex flex-col items-center md:items-baseline md:w-1/2 md:max-w-xs">
-                            {this.state.widthSet}
-                            <input
-                                type="range"
-                                className="
-                                  form-range
-                                  appearance-none
-                                  w-full
-                                  h-6
-                                  p-0
-                                  bg-transparent
-                                  focus:outline-none focus:ring-0 focus:shadow-none
-                                "
-                                id="customRange1"
-                                min="10"
-                                max="2000"
-                                step="10"
-                                changetype="widthSet"
-                                onChange={this.handleInnerChange.bind(this)}
-                            /> 
-                        </div>
-                    </div>
-                    <div className="flex w-full flex-col items-center md:flex-row mt-10 justify-between"> 
-                        <div>Высота</div>
-                        <div className="w-2/3 flex flex-col items-center md:items-baseline md:w-1/2 md:max-w-xs">
-                            {this.state.heightSet}
-                            <input
-                                type="range"
-                                className="
-                                  form-range
-                                  appearance-none
-                                  w-full
-                                  h-6
-                                  p-0
-                                  bg-transparent
-                                  focus:outline-none focus:ring-0 focus:shadow-none
-                                "
-                                id="customRange1"
-                                min="10"
-                                max="2000"
-                                step="10"
-                                changetype="heightSet"
-                                onChange={this.handleInnerChange.bind(this)}
-                            /> 
-
-                        </div>
-                    </div>
-                    <div className="flex w-full flex-col items-center md:flex-row mt-10 justify-between">
-                        <div>Граница</div>
-                        <div>
-                            <input type="checkbox" id="borderOn" className="form-input" name="borderOnSet" onChange = {(e) => {this.handleChange(e)}}/>
-                        </div>
-                    </div>
-                    <div className="flex w-full flex-col items-center md:flex-row mt-10 justify-between">
-                        <div>Цвет границы</div>
-                        <div>
-                            <HexColorPicker color={this.state.borderColorSet} onChange={(e) => {this.handleInnerChange(e, "borderColorSet")}}/>
-                        </div>
-                    </div>
                     <div className="flex w-full flex-col items-center md:flex-row mt-10 justify-between">
                         <div>Цвет клетки</div>
                         <div>
