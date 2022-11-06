@@ -46,8 +46,7 @@ export default class Canvas extends React.Component {
 
         this.cells = {active: [], toAdd: [], toDelete: [], activeTest: []};
 
-        //let screen = {width: this.state.settings.widthSet / this.sizes.width, height: this.state.settings.heightSet / this.sizes.height};  
-    this.context = this.root.current.getContext("2d"); 
+        this.context = this.root.current.getContext("2d"); 
 
         this.props.setOnUpdate(this.onUpdateState.bind(this), this.onUpdateSettings.bind(this));
 
@@ -60,8 +59,8 @@ export default class Canvas extends React.Component {
                 settings: settings, 
                 screen: {width: settings.widthSet / this.sizes.width, height: settings.heightSet / this.sizes.height}
             },
-            () => {this.clearCells()
-        });
+            () => {this.clearCells()}
+        );
     }
 
     /**
