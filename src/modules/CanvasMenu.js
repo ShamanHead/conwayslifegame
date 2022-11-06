@@ -2,7 +2,12 @@ import React from 'react';
 import Menu from './Menu';
 import Canvas from './Canvas';
 
+/**
+ * Main App class. 
+ * @extends React.Component
+ */
 export default class CanvasMenu extends React.Component {
+
     constructor(props) {
         super(props);
 
@@ -11,8 +16,8 @@ export default class CanvasMenu extends React.Component {
             onUpdateCanvas: "",
             generationCount: 0,
             settingsCanvas: {
-                widthSet: 200,
-                heightSet: 200,
+                widthSet: 1000,
+                heightSet: 500,
                 colorSet: "#add8e6",
                 borderOnSet: false,
                 borderColorSet: "#000"

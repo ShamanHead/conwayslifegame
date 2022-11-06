@@ -1,6 +1,12 @@
 import React from 'react';
 
+
+/**
+ * Main Canvas Class, operates with cells 
+ * @extends React.Component
+ */
 export default class Canvas extends React.Component {
+
     constructor(props) {
         super(props);
 
@@ -14,9 +20,25 @@ export default class Canvas extends React.Component {
         this.root = React.createRef();
     }         
 
+    /**
+     * Setup main params on mount
+     *
+     */
     componentDidMount() { 
         this.sizes = {width: 2, height: 2};
-        this.setState({screen: {width: this.state.settings.widthSet / this.sizes.width, height: this.state.settings.heightSet / this.sizes.height}})
+        this.setState(
+            {
+                screen: {
+                    width: 
+                        this.state.settings.widthSet / 
+                        this.sizes.width, 
+                    height: 
+                        this.state.settings.heightSet / 
+                        this.sizes.height
+                }
+            }
+        , () => {this.clearCells()})
+
         this.mode = 0;
         this.interval = null;
         this.generationCount = 0;
@@ -24,28 +46,29 @@ export default class Canvas extends React.Component {
 
         this.cells = {active: [], toAdd: [], toDelete: [], activeTest: []};
 
-        let screen = {width: this.state.settings.widthSet / this.sizes.width, height: this.state.settings.heightSet / this.sizes.height}; 
-
-        for(let y = 0;y < screen.height;y++) {
-            this.cells.active[y] = [];
-            
-            for(let x = 0;x < screen.width;x++) {
-                this.cells.active[y][x] = 0;
-            }
-        }
-        this.context = this.root.current.getContext("2d"); 
+        //let screen = {width: this.state.settings.widthSet / this.sizes.width, height: this.state.settings.heightSet / this.sizes.height};  
+    this.context = this.root.current.getContext("2d"); 
 
         this.props.setOnUpdate(this.onUpdateState.bind(this), this.onUpdateSettings.bind(this));
 
-        this.draw();
-
+        this.draw(); 
     }
 
     onUpdateSettings(settings) {
-        this.setState({settings: settings, screen: {width: settings.widthSet / this.sizes.width, height: settings.heightSet / this.sizes.height}},
-            () => {this.clearCells()});
+        this.setState(
+            {
+                settings: settings, 
+                screen: {width: settings.widthSet / this.sizes.width, height: settings.heightSet / this.sizes.height}
+            },
+            () => {this.clearCells()
+        });
     }
 
+    /**
+     * Function to react to updated state, changed by CanvasMenu
+     *
+     * @param {string} props - Current State
+     */
     onUpdateState(props) {
         switch(props) {
             case "start" :
@@ -67,6 +90,9 @@ export default class Canvas extends React.Component {
         }
     }
 
+    /**
+     * Clears canvas
+     */
     clearCells() {
         this.cells = {active: [], toAdd: [], toDelete: [], activeTest: []};
 
@@ -82,6 +108,10 @@ export default class Canvas extends React.Component {
         this.draw(); 
     }
 
+    /**
+     * Spawns random cells on board
+     *
+     */
     soup() {
         for(let y = 0;y < this.state.screen.height;y++) { 
             for(let x = 0;x < this.state.screen.width;x++) {
@@ -94,10 +124,9 @@ export default class Canvas extends React.Component {
 
         this.clear();
         this.draw(); 
- 
     }
 
-    mouseUp(e) {
+    mouseUp() {
        this.drawGeneration = false; 
        this.lastMouseCords = [0, 0];
     }
@@ -133,10 +162,7 @@ export default class Canvas extends React.Component {
 
         this.setState({
             interval: setInterval(() => {this.cycle()}, 0)   
-        })
-        
-        //this.cycle();
-
+        })    
     }
 
     stopUpdating() {
@@ -174,12 +200,13 @@ export default class Canvas extends React.Component {
             this.cells.active[pos[0]][pos[1]] = 0;
             this.cells.activeTest.splice(found, 1);
         }
-
-        //this.cells.active[pos[0]][pos[1]] = this.cells.active[pos[0]][pos[1]] === 1 ? 0 : 1; 
     }
 
+    /**
+     * Main cellular automate function
+     *
+     */
     cycle() {
-        //console.log(this.cells.activeTest);
         this.cells.activeTest = [];
         this.generationCount++;
         if(this.generationCount % 5 === 0) {
@@ -187,8 +214,7 @@ export default class Canvas extends React.Component {
         }
         for(let y = 0; y < this.state.screen.width;y++) {
             for(let x = 0;x < this.state.screen.height;x++) {
-                let curCell = this.cells.active[x][y],
-                    left = x - 1, right = x + 1, top = y - 1, bottom = y + 1,
+                let left = x - 1, right = x + 1, top = y - 1, bottom = y + 1,
                     nbrs = 0;
 
                 if(left < 0) {
@@ -210,13 +236,16 @@ export default class Canvas extends React.Component {
 
                         if(this.cells.active[x1][y1] === 1) {
                             nbrs++;
-                            //console.log({x1: x1, y1: y1, x: x, y: y, left: left, right: right, top: top, bottom: bottom, nbrs: nbrs});
-                            //console.log([left, right, top, bottom]);
                         }
                     }
                 }
 
-                if(( this.cells.active[x][y] === 1 && (nbrs === 3 || nbrs === 2) ) || (nbrs === 3 && this.cells.active[x][y] === 0)) this.cells.activeTest.push([x, y])
+                if(
+                    ( this.cells.active[x][y] === 1 && (nbrs === 3 || nbrs === 2) ) || 
+                    (nbrs === 3 && this.cells.active[x][y] === 0)
+                ) {
+                    this.cells.activeTest.push([x, y])
+                }
 
                 if(nbrs === 3) this.cells.toAdd.push([x, y]); 
                 if((nbrs < 2 || nbrs > 3) && this.cells.active[x][y] === 1) this.cells.toDelete.push([x, y]); 
@@ -247,8 +276,6 @@ export default class Canvas extends React.Component {
         this.context.linewidth = "1";
         this.context.strokeStyle = this.state.settings.borderColorSet;
          
-        let x = 0, y = 0, cellX = 0, cellY = 0; 
-
         if(this.state.settings.borderOnSet === true){
             this.context.beginPath()
 

@@ -1,6 +1,4 @@
 import React from 'react'
-import ColorPicker from './ColorPicker'
-import VolumeSlider from './VolumeSlider'
 import { HexColorPicker } from "react-colorful";
 
 export default class Menu extends React.Component {
@@ -111,7 +109,7 @@ export default class Menu extends React.Component {
                     <div className="flex w-full flex-col items-center md:flex-row mt-10 justify-between">
                         <div>Граница</div>
                         <div>
-                            <input type="checkbox" id="borderOn" class="form-input" name="borderOnSet" onChange = {(e) => {this.handleChange(e)}}/>
+                            <input type="checkbox" id="borderOn" className="form-input" name="borderOnSet" onChange = {(e) => {this.handleChange(e)}}/>
                         </div>
                     </div>
                     <div className="flex w-full flex-col items-center md:flex-row mt-10 justify-between">
@@ -128,7 +126,7 @@ export default class Menu extends React.Component {
                     </div>
                     <div></div>
                     <div>
-                        <button class="disabled-button"
+                        <button className="disabled-button"
                                 type="submit" 
                                 onClick={() => 
                                             {this.props.setSettingsState(this.state)}}
