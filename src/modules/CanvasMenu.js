@@ -16,9 +16,9 @@ export default class CanvasMenu extends React.Component {
             onUpdateCanvas: "",
             generationCount: 0,
             settingsCanvas: {
-                widthSet: 1000,
-                heightSet: 500,
-                colorSet: "#add8e6",
+                widthSet: 1512, //TODO: Auto height/width based on monitor properties
+                heightSet: 759,
+                colorSet: "#F5DDDD",
                 borderOnSet: false,
                 borderColorSet: "#000"
             }
@@ -30,10 +30,27 @@ export default class CanvasMenu extends React.Component {
         this.setCanvasState = this.setCanvasState.bind(this);
     }
 
+    componentDidMount() {
+        window.addEventListener('resize', this.updateDimensions.bind(this));
+    }
+
+    componentWillUnmount() {
+        window.removeEventListener('resize', this.updateDimensions.bind(this));
+    }
+
     updateGenerationCount(count) {
         this.setState({
             generationCount: count
         })
+    }
+    
+    updateDimensions() {
+        let mutateSetting = this.state.settingsCanvas
+
+        mutateSetting.widthSet = window.innerWidth - (window.innerWidth / 100 * 20);
+        mutateSetting.heightSet = window.innerHeight - (window.innerHeight / 100 * 30);
+
+        this.setSettingsState(mutateSetting)
     }
 
     setCanvasState( state ) {
