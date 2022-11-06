@@ -11,13 +11,15 @@ export default class CanvasMenu extends React.Component {
     constructor(props) {
         super(props);
 
+        let [width, height] = this.getDimensions();
+
         this.state = ({
             updateCanvas : "",
             onUpdateCanvas: "",
             generationCount: 0,
             settingsCanvas: {
-                widthSet: 1512, //TODO: Auto height/width based on monitor properties
-                heightSet: 759,
+                widthSet: width, 
+                heightSet: height,
                 colorSet: "#F5DDDD",
                 borderOnSet: false,
                 borderColorSet: "#000"
@@ -43,12 +45,22 @@ export default class CanvasMenu extends React.Component {
             generationCount: count
         })
     }
-    
-    updateDimensions() {
-        let mutateSetting = this.state.settingsCanvas
+   
+    getDimensions() {
+        return (
+            [
+                window.innerWidth - (window.innerWidth / 100 * 30),
+                window.innerHeight - (window.innerHeight / 100 * 30)
+            ]
+        )
+    }
 
-        mutateSetting.widthSet = window.innerWidth - (window.innerWidth / 100 * 20);
-        mutateSetting.heightSet = window.innerHeight - (window.innerHeight / 100 * 30);
+    updateDimensions() {
+        let mutateSetting = this.state.settingsCanvas,
+            [width, height] = this.getDimensions()
+
+        mutateSetting.widthSet = width;
+        mutateSetting.heightSet = height;
 
         this.setSettingsState(mutateSetting)
     }
@@ -78,7 +90,7 @@ export default class CanvasMenu extends React.Component {
 
     render() {
         return (
-            <div className="canvas-menu w-full flex items-center flex-col">
+            <div className="canvas-menu w-4/5 flex mt-5 items-center flex-col">
                 <Canvas setOnUpdate={this.setOnUpdate}
                         canvasState={this.state.updateCanvas}
                         updateGenerationCount={this.updateGenerationCount}
