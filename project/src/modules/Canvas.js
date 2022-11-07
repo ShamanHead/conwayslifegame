@@ -25,7 +25,7 @@ export default class Canvas extends React.Component {
      *
      */
     componentDidMount() { 
-        this.sizes = {width: 2, height: 2};
+        this.sizes = {width: 5, height: 5};
         this.setState(
             {
                 screen: {
@@ -116,7 +116,7 @@ export default class Canvas extends React.Component {
             for(let x = 0;x < this.state.screen.width;x++) {
                 if(Math.floor(Math.random() * 2) === 1) {
                    this.cells.active[y][x] = 1;
-                   this.cells.activeTest.push([x,y])
+                   this.cells.activeTest.push([y,x])
                 }
             }
         }

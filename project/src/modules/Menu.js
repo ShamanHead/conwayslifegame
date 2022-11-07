@@ -1,5 +1,4 @@
 import React from 'react'
-import { HexColorPicker } from "react-colorful";
 
 export default class Menu extends React.Component {
     constructor(props) {

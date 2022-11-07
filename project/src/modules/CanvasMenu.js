@@ -90,7 +90,7 @@ export default class CanvasMenu extends React.Component {
 
     render() {
         return (
-            <div className="canvas-menu w-4/5 flex mt-5 items-center flex-col">
+            <div className="canvas-menu w-full md:w-4/5 flex mt-5 items-center flex-col">
                 <Canvas setOnUpdate={this.setOnUpdate}
                         canvasState={this.state.updateCanvas}
                         updateGenerationCount={this.updateGenerationCount}

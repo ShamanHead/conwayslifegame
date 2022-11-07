@@ -1,0 +1,96 @@
+.router {
+    background-color: #53687E;
+    padding: 1% 0 0 0.5%;
+    min-width: 250px;
+
+    &-name {
+        font-family: 'bungee';
+        text-align: center;
+    }
+
+    &-header {
+        /* Position and sizing of burger button */
+        .bm-burger-button {
+            @apply md:hidden;
+            position: fixed;
+            width: 25px;
+            height: 15px;
+            left: 10px;
+            top: 13px;
+        }
+        
+        /* Color/shape of burger icon bars */
+        .bm-burger-bars {
+          background: #373a47;
+        }
+        
+        /* Color/shape of burger icon bars on hover*/
+        .bm-burger-bars-hover {
+          background: #a90000;
+        }
+        
+        /* Position and sizing of clickable cross button */
+        .bm-cross-button {
+          height: 24px;
+          width: 24px;
+        }
+        
+        /* Color/shape of close button cross */
+        .bm-cross {
+          background: #bdc3c7;
+        }
+        
+        /*
+        Sidebar wrapper styles
+        Note: Beware of modifying this element as it can break the animations - you should not need to touch it in most cases
+        */
+        .bm-menu-wrap {
+            position: fixed;
+            height: 100%;
+            left: 0;
+            top: 0;
+        }
+        
+        /* General sidebar styles */
+        .bm-menu {
+            background: #373a47;
+            padding: 2.5em 1.5em 0;
+            font-size: 1.15em;
+        }
+        
+        /* Morph shape necessary with bubble or elastic */
+        .bm-morph-shape {
+            fill: #373a47;
+        }
+        
+        /* Wrapper for item list */
+        .bm-item-list {
+            color: #b8b7ad;
+            padding: 0.8em;
+        }
+        
+        /* Individual item */
+        .bm-item {
+            display: inline-block;
+        }
+        
+        /* Styling of overlay */
+        .bm-overlay {
+            left: 0;
+            top: 0;
+            background: rgba(0, 0, 0, 0.3);
+        }
+    }
+
+    &-item {
+        margin-bottom: 4%;
+        margin-left: 3%;
+        font-family: 'fredoka';
+
+        svg {
+            width: 35px;
+            height: 35px;
+            margin-right: 3%;
+        }
+    }
+}
