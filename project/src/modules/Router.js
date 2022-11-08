@@ -69,6 +69,10 @@ export default class Router extends React.Component {
                     <h1 className="router-name">conway's lifegame</h1> 
                 </div>
                 {this.getMenu()}
+                <div className="hidden md:flex text-lg mb-5 flex-col mt-auto text-center">
+                    <span>Arseniy Romanovskiy, (c) 2021, MIT</span>
+                    <span>Made with ❤️</span>
+                </div>
             </div>
         )
     }

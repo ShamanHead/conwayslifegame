@@ -78,6 +78,13 @@ export default class CanvasGenerator {
                 '1', '1', '0',
                 '1', '0', '1'
             ] ],
+            ['l', [
+                '1', '0', '0',
+                '1', '0', '0',
+                '1', '0', '0',
+                '1', '0', '0',
+                '1', '1', '1'
+            ] ],
             ['m', [
                 '1', '0', '1',
                 '1', '1', '1',
@@ -186,6 +193,56 @@ export default class CanvasGenerator {
         ];
 
     static generateFromString(string, width, height, useRandom = false) {
+        let cells = {active: [], toAdd: [], toDelete: [], toRender: []},
+            point = [Math.round(height / 2), Math.round((width / 2) - string.length * 2)],
+            quantifier = 3,
+            unitSize = (width * height) / (15 * quantifier);
+
+        for(let y = 0;y < height;y++) {
+            cells.active[y] = [];
+            
+            for(let x = 0;x < width;x++) {
+                cells.active[y][x] = 0;
+                //cells.toRender.push([y,x])
+            }
+        }
+    
+        for(let i = 0;i < string.length;i++) {
+            let currentString = string[i],
+                found = false;
+
+            for(let j = 0;j < this.letting.length;j++) {
+                if(this.letting[j][0] == currentString) {
+                    console.log(this.letting[j]);
+                    found = this.letting[j];
+                    break;
+                }
+            }
+            
+            if(!found) continue;
+
+            console.log(point)
+
+            let offsetY = point[0],
+                offsetX = point[1],
+                matrix = found[1];
+
+            for(let i = 0;i < 15;i++) {
+                if(i % 3 === 0) {
+                    offsetY++;
+                    offsetX = point[1];
+                }
         
+                if(matrix[i] === '1') {
+                    cells.active[offsetY][offsetX] = 1;
+                    cells.toRender.push([offsetY, offsetX]);
+                }
+                offsetX++;
+            }
+
+            point = [point[0], point[1] + 4]; 
+        }
+
+        return cells;
     }
 }

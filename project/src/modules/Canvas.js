@@ -1,5 +1,5 @@
 import React from 'react';
-
+import CanvasGenerator from './CanvasGenerator';
 
 /**
  * Main Canvas Class, operates with cells 
@@ -37,14 +37,19 @@ export default class Canvas extends React.Component {
                         this.sizes.height
                 }
             }
-        , () => {this.clearCells()})
+        , () => {
+            this.clearCells();
+            this.cells = CanvasGenerator.generateFromString("life", this.state.screen.width, this.state.screen.height, false)
+            this.clear();
+            this.draw();
+        })
 
         this.mode = 0;
         this.interval = null;
         this.generationCount = 0;
         this.drawGeneration = false;
 
-        this.cells = {active: [], toAdd: [], toDelete: [], activeTest: []};
+        this.cells = {active: [], toAdd: [], toDelete: [], toRender: []};
 
         this.context = this.root.current.getContext("2d"); 
 
@@ -93,7 +98,7 @@ export default class Canvas extends React.Component {
      * Clears canvas
      */
     clearCells() {
-        this.cells = {active: [], toAdd: [], toDelete: [], activeTest: []};
+        this.cells = {active: [], toAdd: [], toDelete: [], toRender: []};
 
         for(let y = 0;y < this.state.screen.height;y++) {
             this.cells.active[y] = [];
@@ -116,7 +121,7 @@ export default class Canvas extends React.Component {
             for(let x = 0;x < this.state.screen.width;x++) {
                 if(Math.floor(Math.random() * 2) === 1) {
                    this.cells.active[y][x] = 1;
-                   this.cells.activeTest.push([y,x])
+                   this.cells.toRender.push([y,x])
                 }
             }
         }
@@ -148,6 +153,7 @@ export default class Canvas extends React.Component {
         let x = e.nativeEvent.offsetX, y = e.nativeEvent.offsetY,
             pos = [Math.floor( (y - 1) / this.sizes.height), 
                    Math.floor( (x - 1 ) / this.sizes.width)]; 
+
         this.lastMouseCords = [pos[0], pos[1]];
         this.drawGeneration = true; 
         this.clear(this.context, this.root.current); 
@@ -160,7 +166,10 @@ export default class Canvas extends React.Component {
         this.mode = 1;
 
         this.setState({
-            interval: setInterval(() => {this.cycle()}, 0)   
+            interval: setInterval(() => {this.cycle()}, 32),
+            redraw: setInterval(() => {
+                this.clear();
+                this.draw();}, 16)
         })    
     }
 
@@ -169,6 +178,7 @@ export default class Canvas extends React.Component {
         this.mode = 0;
 
         clearInterval(this.state.interval);
+        clearInterval(this.state.redraw);
 
         this.setState({
             interval: null
@@ -183,8 +193,8 @@ export default class Canvas extends React.Component {
 
     onCell(pos) {
         let found = false;
-        for(let i = 0; i < this.cells.activeTest.length;i++) {
-            let current = this.cells.activeTest[i];
+        for(let i = 0; i < this.cells.toRender.length;i++) {
+            let current = this.cells.toRender[i];
             if(current[0] === pos[0] && current[1] === pos[1]) {
                 found = i;
                 break;
@@ -194,10 +204,10 @@ export default class Canvas extends React.Component {
 
         if( found === false ) {
             this.cells.active[pos[0]][pos[1]] = 1;
-            this.cells.activeTest.push([pos[0], pos[1]]);
+            this.cells.toRender.push([pos[0], pos[1]]);
         } else {
             this.cells.active[pos[0]][pos[1]] = 0;
-            this.cells.activeTest.splice(found, 1);
+            this.cells.toRender.splice(found, 1);
         }
     }
 
@@ -206,7 +216,7 @@ export default class Canvas extends React.Component {
      *
      */
     cycle() {
-        this.cells.activeTest = [];
+        this.cells.toRender = [];
         this.generationCount++;
         if(this.generationCount % 5 === 0) {
             this.props.updateGenerationCount(this.generationCount);
@@ -243,7 +253,7 @@ export default class Canvas extends React.Component {
                     ( this.cells.active[x][y] === 1 && (nbrs === 3 || nbrs === 2) ) || 
                     (nbrs === 3 && this.cells.active[x][y] === 0)
                 ) {
-                    this.cells.activeTest.push([x, y])
+                    this.cells.toRender.push([x, y])
                 }
 
                 if(nbrs === 3) this.cells.toAdd.push([x, y]); 
@@ -264,10 +274,7 @@ export default class Canvas extends React.Component {
         }
 
         this.cells.toAdd = [];
-        this.cells.toDelete = [];
-
-        this.clear();
-        this.draw();
+        this.cells.toDelete = []; 
     }
 
     draw() {
@@ -293,8 +300,8 @@ export default class Canvas extends React.Component {
 
         this.context.beginPath();
 
-        for(let i = 0;i < this.cells.activeTest.length;i++) {
-           let current = this.cells.activeTest[i];
+        for(let i = 0;i < this.cells.toRender.length;i++) {
+           let current = this.cells.toRender[i];
            this.context.fillRect(current[1] * this.sizes.width, current[0] * this.sizes.height, this.sizes.width, this.sizes.height); 
         }
 
