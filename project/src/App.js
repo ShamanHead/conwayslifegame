@@ -2,6 +2,8 @@ import CanvasMenu from './modules/CanvasMenu';
 import RouteError from './modules/RouteError';
 import Root from './modules/Root';
 import Page from './modules/Page';
+import {pages} from './modules/Pages';
+import PatternsSearch from './modules/Patterns/PatternsSearch'
 
 import {
   createBrowserRouter,
@@ -16,6 +18,8 @@ import './css/CanvasMenu.scss'
 import './css/Router.scss'
 import './css/Fonts.scss'
 import './css/RouteError.scss'
+import './css/Page.scss'
+import './css/Patterns.scss'
 
 const router = createBrowserRouter([
     {
@@ -31,7 +35,12 @@ const router = createBrowserRouter([
                 {
                     index: true,
                     path: "about",
-                    element: <Page/>,
+                    element: <Page content={pages.about}/>,
+                },
+                {
+                    index: true,
+                    path: "patterns",
+                    element: <PatternsSearch/>,
                 }
             ]
     }
