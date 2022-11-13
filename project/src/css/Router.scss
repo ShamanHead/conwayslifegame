@@ -92,7 +92,8 @@
     &-item {
         padding: 3% 0 3% 3%;
         font-family: 'fredoka';
-        
+        transition: 0.25s;
+
         &.active {
             background-color: #F5DDDD;
             color: #53687E; 

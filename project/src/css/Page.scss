@@ -1,0 +1,30 @@
+.page {
+    min-height: 100vh;
+    padding-left: 4%;
+    padding-top: 3%;
+    background: url("../../public/background.png");
+
+    &-title {
+        font-size: 3em;
+        font-family: 'bungee'; 
+    }
+
+    &-link {
+        text-decoration: underline;
+        transition: 0.1s;
+
+        &:hover {
+            color: #F5DDDD;  
+        }
+    }
+
+    &-article {
+        @apply max-w-5xl;
+        width: 100%;
+
+        &__title {
+            font-size: 2em;
+            font-family: 'fredoka';
+        }
+    }
+}

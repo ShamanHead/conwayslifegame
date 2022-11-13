@@ -20,7 +20,7 @@ export default class CanvasMenu extends React.Component {
             settingsCanvas: {
                 widthSet: width, 
                 heightSet: height,
-                colorSet: "#F5DDDD",
+                colorSet: "rgba(245,221,221)",
                 borderOnSet: false,
                 borderColorSet: "#000"
             }
@@ -90,7 +90,7 @@ export default class CanvasMenu extends React.Component {
 
     render() {
         return (
-            <div className="page canvas-menu flex mt-5 items-center flex-col">
+            <div className="canvas-menu flex mt-5 items-center flex-col">
                 <Canvas setOnUpdate={this.setOnUpdate}
                         canvasState={this.state.updateCanvas}
                         updateGenerationCount={this.updateGenerationCount}

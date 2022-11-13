@@ -1,0 +1,44 @@
+.patterns {
+    width: 96%;
+
+    &-search {
+        width: 100%;
+        margin: 2% 0 2% 0;
+
+        input {
+            width: 100%;
+            background-color: #53687E;
+            padding: 0 1% 0 1%;
+
+            &::placeholder {
+                color: white;
+            }
+        }
+    }
+
+    &-list {
+        @apply flex flex-row flex-wrap justify-between;
+
+        &-item {
+            @apply mb-8 flex flex-col items-center;
+
+            background-color: #53687E; 
+
+            &__button {
+                @apply pt-3 pb-3;
+
+                transition: 0.25s;
+                background-color: green;
+                width: 100%;
+                text-align: center;
+                cursor: pointer;
+
+                &:hover {
+                    background-color: darken(green, 10);
+                }
+            }
+        }
+
+    }
+
+}
