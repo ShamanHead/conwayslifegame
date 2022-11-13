@@ -1,14 +1,15 @@
 import CanvasMenu from './modules/CanvasMenu';
-import Router from './modules/Router';
 import RouteError from './modules/RouteError';
 import Root from './modules/Root';
-import BrowserRouter from 'react-router-dom';
+import Page from './modules/Page';
 
 import {
   createBrowserRouter,
   RouterProvider,
-  Route,
+  useLocation
 } from "react-router-dom";
+
+import { TransitionGroup, CSSTransition } from 'react-transition-group'
 
 import './css/index.css'
 import './css/CanvasMenu.scss'
@@ -26,16 +27,22 @@ const router = createBrowserRouter([
                 {
                     path: "/",
                     element: <CanvasMenu/>
+                },
+                {
+                    index: true,
+                    path: "about",
+                    element: <Page/>,
                 }
             ]
-  },
+    }
 ]);
 
 
 function App() {
+
   return (
             <div className="flex flex-col w-full md:flex-row">
-              <RouterProvider router={router}/> 
+                <RouterProvider router={router}/> 
             </div>
           );
 }
