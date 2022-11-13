@@ -5,7 +5,7 @@ export default function RouteError() {
   console.error(error);
 
   return (
-      <div class="route-error flex flex-col w-full items-center justify-center min-h-screen">
+      <div className="route-error flex flex-col w-full items-center justify-center min-h-screen">
         <h1>404</h1>
         <span>It happens, don't worry! You can navigate to pages from the navigation block 😁🖖</span>
     </div>

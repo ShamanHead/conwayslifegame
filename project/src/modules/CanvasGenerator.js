@@ -213,15 +213,12 @@ export default class CanvasGenerator {
 
             for(let j = 0;j < this.letting.length;j++) {
                 if(this.letting[j][0] == currentString) {
-                    console.log(this.letting[j]);
                     found = this.letting[j];
                     break;
                 }
             }
             
             if(!found) continue;
-
-            console.log(point)
 
             let offsetY = point[0],
                 offsetX = point[1],
