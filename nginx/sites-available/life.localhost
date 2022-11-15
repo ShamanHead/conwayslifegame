@@ -1,0 +1,13 @@
+server {
+        listen 80;
+        listen [::]:80;
+        root /var/www/html/web1.webdock.io;
+        index index.html index.htm;
+        server_name web1.webdock.io;
+
+   location / {
+       try_files $uri $uri/ =404;
+   }
+
+}
+

@@ -1,0 +1,15 @@
+{
+    "name": "smhd/api",
+    "require": {
+        "zircote/swagger-php": "^4.5",
+        "itsgoingd/clockwork": "^5.1",
+        "slim/slim": "^4.11",
+        "slim/psr7": "^1.6"
+    },
+    "authors": [
+        {
+            "name": "Arseniy Romanovskiy",
+            "email": "ronyplay247@gmail.com"
+        }
+    ]
+}

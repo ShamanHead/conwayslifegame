@@ -1,67 +1,36 @@
 version: "3"
 
 services: 
-
-  mariadb:
-    image: wodby/mariadb:$MARIADB_TAG
-    container_name: "${PROJECT_NAME}_mariadb"
-    stop_grace_period: 30s
-    environment:
-      MYSQL_ROOT_PASSWORD: $DB_ROOT_PASSWORD
-      MYSQL_DATABASE: $DB_NAME
-      MYSQL_USER: $DB_USER
-      MYSQL_PASSWORD: $DB_PASSWORD
-
   php:
-    image: wodby/php:$PHP_TAG
-    container_name: "${PROJECT_NAME}_php"
-    environment:
-      PHP_SENDMAIL_PATH: '"/usr/bin/dos2unix -u | /usr/sbin/ssmtp -t -f"'
-      DB_HOST: $DB_HOST
-      DB_USER: $DB_USER
-      DB_PASSWORD: $DB_PASSWORD
-      DB_NAME: $DB_NAME
-      PHP_FPM_USER: wodby
-      PHP_FPM_GROUP: wodby
-      PHP_UPLOAD_MAX_FILESIZE: "10000M"
-      PHP_POST_MAX_SIZE: "10000M"
+    image: php:fpm-alpine
+    container_name: lifeproject-php
     volumes:
-    - ./:/var/www/html:cached
+      - ./project/api:/var/www/api.localhost
 
   nginx:
-    image: wodby/nginx:$NGINX_TAG
-    container_name: "${PROJECT_NAME}_nginx"
-    depends_on:
-    - php
-    environment:
-      NGINX_STATIC_OPEN_FILE_CACHE: "off"
-      NGINX_ERROR_LOG_LEVEL: debug
-      NGINX_BACKEND_HOST: php
-      NGINX_VHOST_PRESET: php 
-      NGINX_SERVER_ROOT: /var/www/html/,
+    image: nginx:1.23.2
+    container_name: lifeproject-nginx
+    build:
+        dockerfile: Dockerfile
     volumes:
-    - ./:/var/www/html:cached
-    labels:
-    - "traefik.http.routers.${PROJECT_NAME}_nginx.rule=Host(`${PROJECT_BASE_URL}`)"
+      - ./project/build:/var/www/life.localhost
+      - ./project/api:/var/www/api.localhost
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf
+    ports: 
+      - "80:80"
+      - "81:81"
 
+  database:
+    image: mariadb:latest
+    container_name: lifeproject-mariadb
+    environment:
+      MARIADB_ROOT_PASSWORD: 3313
+      MARIADB_DATABASE: "lifeproject"
+  
   pma:
-    image: phpmyadmin/phpmyadmin
-    container_name: "${PROJECT_NAME}_pma"
+    image: phpmyadmin
+    container_name: lifeproject-pma
     environment:
-      PMA_HOST: $DB_HOST
-      PMA_USER: $DB_USER
-      PMA_PASSWORD: $DB_PASSWORD
-      PHP_UPLOAD_MAX_FILESIZE: 1G
-      PHP_MAX_INPUT_VARS: 1G
-    labels:
-    - "traefik.http.routers.${PROJECT_NAME}_pma.rule=Host(`pma.${PROJECT_BASE_URL}`)"
-
-  traefik:
-    image: traefik:v2.0
-    container_name: "${PROJECT_NAME}_traefik"
-    command: --api.insecure=true --providers.docker
+      PMA_HOST: database
     ports:
-    - '8000:80'
-      #- '8080:8080' # Dashboard
-    volumes:
-    - /var/run/docker.sock:/var/run/docker.sock
+      - "8080:80"
