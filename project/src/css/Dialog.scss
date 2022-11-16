@@ -1,0 +1,31 @@
+.dialog {
+    @apply flex flex-col items-center justify-center
+                absolute left-0 w-full h-full;
+
+    &.open {
+        opacity: 1;
+        top: 0;
+    }
+
+    &.close {
+        opacity: 0;
+        top: -100%;
+    }
+
+    transition: 0.25s;
+
+    .shade {
+        @apply w-full h-full left-0 top-0;
+
+        position: absolute;
+        background-color: rgba(0,0,0,0.5);
+    }
+
+    .dialog-window {
+        @apply flex flex-col items-center absolute w-full h-full md:w-4/6 md:h-3/6;
+
+        border-radius: 10px;
+        background-color: #3A4454;
+        z-index: 2;
+    }
+}

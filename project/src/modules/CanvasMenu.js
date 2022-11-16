@@ -1,6 +1,7 @@
 import React from 'react';
 import Menu from './Menu';
 import Canvas from './Canvas';
+import Dialog from './Dialog';
 
 /**
  * Main App class. 
@@ -101,6 +102,7 @@ export default class CanvasMenu extends React.Component {
                       setSettingsState={this.setSettingsState}
                       startupSettings={this.state.settingsCanvas}  
                 /> 
+                <Dialog/>
             </div>
         )
     }

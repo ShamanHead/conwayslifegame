@@ -9,6 +9,9 @@
     "@testing-library/react": "^13.3.0",
     "@testing-library/user-event": "^13.5.0",
     "framer-motion": "^7.6.6",
+    "fs": "0.0.1-security",
+    "glob": "^8.0.3",
+    "path": "^0.12.7",
     "react": "^18.2.0",
     "react-burger-menu": "^3.0.8",
     "react-color": "^2.17.3",
@@ -20,7 +23,8 @@
     "react-transition-group": "^4.4.5",
     "sass": "^1.55.0",
     "tw-elements": "^1.0.0-alpha12",
-    "web-vitals": "^2.1.4"
+    "web-vitals": "^2.1.4",
+    "webpack": "^5.75.0"
   },
   "scripts": {
     "start": "react-scripts start",

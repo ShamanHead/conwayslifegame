@@ -5,16 +5,6 @@ import {
     useRef
 } from "react";
 
-    //onUpdateSettings(settings) {
-    //    this.setState(
-    //        {
-    //            settings: settings, 
-    //            screen: {width: settings.widthSet / this.sizes.width, height: settings.heightSet / this.sizes.height}
-    //        },
-    //        () => {this.clearCells()}
-    //    );
-    //}
-
     /**
      * Clears canvas
      */

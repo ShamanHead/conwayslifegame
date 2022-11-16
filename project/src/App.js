@@ -20,6 +20,7 @@ import './css/Fonts.scss'
 import './css/RouteError.scss'
 import './css/Page.scss'
 import './css/Patterns.scss'
+import './css/Dialog.scss'
 
 const router = createBrowserRouter([
     {
