@@ -102,7 +102,6 @@ export default class CanvasMenu extends React.Component {
                       setSettingsState={this.setSettingsState}
                       startupSettings={this.state.settingsCanvas}  
                 /> 
-                <Dialog/>
             </div>
         )
     }

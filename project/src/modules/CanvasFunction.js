@@ -1,16 +1,109 @@
-import React from 'react';
-import CanvasGenerator from './CanvasGenerator';
+import {
+    React,
+    useState,
+    useEffect,
+    useRef
+} from "react";
 
 /**
- * Main Canvas Class, operates with cells 
- * @extends React.Component
+ * Clears canvas
  */
+function clearCells(screen) {
+    const cells = {active: [], toAdd: [], toDelete: [], toRender: []};
 
-//TODO: Make this as function
+    for(let y = 0;y < screen.height;y++) {
+        cells.active[y] = [];
+        
+        for(let x = 0;x < screen.width;x++) {
+            cells.active[y][x] = 0;
+        }
+    }
 
-export default class Canvas extends React.Component {
+    return cells;
 
-    constructor(props) {
+    //TODO
+    //clear();
+    //draw(); 
+}
+
+function draw(context, settings, sizes, cells) {
+    context.fillStyle = settings.colorSet;
+    context.linewidth = "1";
+    context.strokeStyle = settings.borderColorSet;
+     
+    if(settings.borderOnSet === true){
+        context.beginPath()
+
+        for(let y1 = sizes.width; y1 < settings.widthSet;y1+=sizes.width) { 
+                context.moveTo(y1, 0);
+                context.lineTo(y1, settings.heightSet)  
+        }
+
+        for(let x1 = sizes.height; x1 < settings.heightSet;x1+=sizes.width) { 
+                context.moveTo(0, x1);
+                context.lineTo(settings.widthSet, x1)  
+        }
+
+        context.stroke();
+    }
+
+    context.beginPath();
+
+    for(let i = 0;i < cells.toRender.length;i++) {
+       let current = cells.toRender[i];
+       context.fillRect(current[1] * sizes.width, current[0] * sizes.height, sizes.width, sizes.height); 
+    }
+
+    context.stroke();
+}
+
+function clear(context, settings) {
+    context.clearRect(0, 0, settings.widthSet, settings.heightSet);
+} 
+
+export default function Canvas (props) {
+
+    const root = useRef(null)
+    let context = null;
+    const sizes = {};
+    const cells = {active: [], toAdd: [], toDelete: [], toRender: []}
+
+    const [settings, setSettings] = useState({
+        widthSet: 360, 
+        heightSet: 250,
+        colorSet: "rgba(245,221,221)",
+        borderOnSet: false,
+        borderColorSet: "#000",
+        widthSize: 5,
+        heightSize: 5
+    }),
+    [screen, setScreen] = useState({
+          width: 
+              settings.widthSet / 
+              sizes.width, 
+          height: 
+              settings.heightSet / 
+              sizes.height
+    });
+
+    useEffect(() => {
+        context = root.current.getContext("2d");
+        draw(context, settings, sizes, props.cells);
+    }) 
+    
+    return (
+        <canvas id="canvas" 
+                width={this.state.settings.widthSet} 
+                height={this.state.settings.heightSet}
+                ref={this.root}
+                onMouseUp = {(e) => {this.mouseUp(e)}}
+                onMouseMove = {(e) => {this.mouseMove(e)}}
+                onMouseDown = {(e) => {this.mouseDown(e)}}/>
+    );
+ 
+}
+
+constructor(props) {
         super(props);
 
         this.state = {
@@ -328,5 +421,3 @@ export default class Canvas extends React.Component {
                     onMouseDown = {(e) => {this.mouseDown(e)}}/>
         );
     }
-
-}

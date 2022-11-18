@@ -23,4 +23,5 @@ return array(
     'Doctrine\\Common\\Lexer\\' => array($vendorDir . '/doctrine/lexer/lib/Doctrine/Common/Lexer'),
     'Doctrine\\Common\\Annotations\\' => array($vendorDir . '/doctrine/annotations/lib/Doctrine/Common/Annotations'),
     'Clockwork\\' => array($vendorDir . '/itsgoingd/clockwork/Clockwork'),
+    'App\\' => array($baseDir . '/src/App'),
 );

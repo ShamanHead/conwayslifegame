@@ -3,7 +3,7 @@
         'name' => 'smhd/api',
         'pretty_version' => '0.1.x-dev',
         'version' => '0.1.9999999.9999999-dev',
-        'reference' => '98cdda89916f802dd635a40cfdbc96b0a1ac6a4c',
+        'reference' => '6e8f567266025309c84aae5ed87940f408dfe603',
         'type' => 'library',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -160,7 +160,7 @@
         'smhd/api' => array(
             'pretty_version' => '0.1.x-dev',
             'version' => '0.1.9999999.9999999-dev',
-            'reference' => '98cdda89916f802dd635a40cfdbc96b0a1ac6a4c',
+            'reference' => '6e8f567266025309c84aae5ed87940f408dfe603',
             'type' => 'library',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),

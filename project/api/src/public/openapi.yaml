@@ -1,0 +1,16 @@
+openapi: 3.0.0
+info:
+  title: 'Lifeproject API'
+  description: ''
+  version: '1'
+servers:
+  -
+    url: localhost
+    description: 'API Server'
+paths:
+  /docs:
+    get:
+      operationId: c825fc9a9ad85d149c02abb406ac499e
+      responses:
+        '200':
+          description: 'Returns documentation in swagger'
