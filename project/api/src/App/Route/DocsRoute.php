@@ -4,23 +4,15 @@ namespace App\Route;
 
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
-use OpenApi\Attributes as OA;
 
 class DocsRoute extends Route {
     protected string $path = "/docs";
     protected string $method = "get";
-    
-    #[OA\Get(
-        path: '/docs',
-        responses: [
-            new OA\Response(response: 200, description: 'Returns documentation in swagger'),
-        ]
-    )]
 
     public function run(Request $request, Response $response, $args) {
         $openapi = \OpenApi\Generator::scan([dirname(__DIR__) . "/../"]);
 
-        file_put_contents( __DIR__ . "/../../public/openapi.yaml", $openapi->toYaml() );
+        file_put_contents( __DIR__ . "/../../public/openapi.yaml", $openapi->toYaml() ); //Disable in prod
  
         ob_start();
 

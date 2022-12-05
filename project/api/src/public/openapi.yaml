@@ -8,9 +8,55 @@ servers:
     url: localhost
     description: 'API Server'
 paths:
-  /docs:
+  /pattern/add:
     get:
-      operationId: c825fc9a9ad85d149c02abb406ac499e
+      operationId: 4647f12442c4141e45eaadb8887aac5a
       responses:
         '200':
-          description: 'Returns documentation in swagger'
+          description: 'Adds new pattern'
+        '500':
+          description: 'Something went wrong'
+  /pattern/search:
+    get:
+      operationId: 5bcb6a7834b9c773418291dfa8ad0fec
+      responses:
+        '200':
+          description: 'Return all patterns'
+  '/pattern/get/{id}':
+    get:
+      operationId: 3be463fe691a431dc3c376765812aae6
+      responses:
+        '200':
+          description: 'Return pattern'
+        '404':
+          description: 'Pattern not found'
+  '/pattern/search/{s}':
+    get:
+      operationId: ba007deb9ccded2cee2549b4a4dc2cb6
+      responses:
+        '200':
+          description: 'Some patterns that would be found'
+        '404':
+          description: 'There is no such patterns for search prompt'
+  /tag/add:
+    get:
+      operationId: cc3e81bc62847610d01d5e379f28016c
+      responses:
+        '200':
+          description: 'Adds new pattern'
+        '500':
+          description: 'Something went wrong'
+  /tag/get:
+    get:
+      operationId: 4db21b6483a49d3a751a0cdc0972c610
+      responses:
+        '200':
+          description: 'Return all tags'
+  '/tag/get/{id}':
+    get:
+      operationId: a62787f3e1d290e67a14085b2e7a718c
+      responses:
+        '200':
+          description: 'Return tag'
+        '404':
+          description: 'Tag not found'

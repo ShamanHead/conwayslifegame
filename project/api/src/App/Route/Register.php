@@ -4,6 +4,8 @@ namespace App\Route;
 
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
+use App\Request\Validate;
+use App\Request\BodyType;
 
 class Register {
 
@@ -70,7 +72,15 @@ class Register {
                 function (Request $request, Response $response, $args) 
                     use ($object) {
 
-                    return $object->run($request, $response, $args);
+                    $validate = Validate::params($object->getBodyType(), $object->getArgs(), $request);
+
+                    if(gettype($validate) === "string") {
+                        $response->getBody()->write($validate);
+
+                        return $response;
+                    } else {
+                        return $object->run($validate, $response, $args);
+                    }
                 }
             );
         }
