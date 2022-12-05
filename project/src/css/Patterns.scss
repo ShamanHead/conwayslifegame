@@ -2,11 +2,25 @@
     width: 96%;
 
     &-search {
-        width: 100%;
-        margin: 2% 0 2% 0;
+        @apply mt-5 w-full flex justify-between;
+
+        &__button {
+            @apply pt-2 pb-2;
+
+            transition: 0.25s;
+            background-color: green;
+            width: 20%;
+            text-align: center;
+            cursor: pointer;
+
+            &:hover {
+                background-color: darken(green, 10);
+            } 
+            
+        }
 
         input {
-            width: 100%;
+            width: 80%;
             background-color: #53687E;
             padding: 0 1% 0 1%;
 
@@ -16,13 +30,44 @@
         }
     }
 
+    &-tags {
+        @apply flex flex-row flex-wrap mb-5;
+
+        .item {
+            @apply mt-5 mr-5 pr-5 pl-5 pt-1 pb-1 cursor-pointer;
+
+            border: 1px;
+            font-size: 0.8em;
+            border-radius: 30px;
+            background-color: #53687E; 
+        }
+    }
+
     &-list {
-        @apply flex flex-row flex-wrap justify-between;
+        @apply flex flex-row flex-wrap justify-center md:justify-between;
 
         &-item {
-            @apply mb-8 flex flex-col items-center;
+            @apply flex flex-col items-start;
 
             background-color: #53687E; 
+
+            &__name {
+                @apply ml-3;
+            }
+
+            &__tags {
+           
+                @apply ml-3 mb-3 flex flex-wrap;
+
+                .item {
+                    @apply mr-2 mt-1 pr-2 pl-2 cursor-pointer;
+
+                    font-size: 0.6em;
+                    border-radius: 30px;
+                    background-color: #53687E; 
+                }
+ 
+            }
 
             &__button {
                 @apply pt-3 pb-3;
@@ -41,4 +86,50 @@
 
     }
 
+}
+
+.tag-list {
+    @apply flex flex-col w-full items-center;
+
+    .selected-tags {
+        @extend .patterns-list-item__tags;
+
+        height: 40px;
+
+        @apply justify-start items-center w-4/5;
+    }
+
+    .mean-list {
+        @apply flex flex-col items-start w-4/5;
+
+        overflow-y: scroll;
+        height: 150px;
+        
+        div {
+            @apply p-2 cursor-pointer w-full;
+
+            background-color: darken(#3A4454, 10); 
+            color: white;
+            transition: 0.2s;
+
+            &.active {
+                background-color: lighten(#3A4454, 10)
+            }
+
+            &:hover {
+                background-color: lighten(#3A4454, 5);
+            }
+        }
+    }
+}
+
+.pattern-add-input {
+    width: 80%;
+    background-color: #53687E;
+    padding: 0 1% 0 1%;
+    align-self: center;
+
+    &::placeholder {
+        color: white;
+    } 
 }

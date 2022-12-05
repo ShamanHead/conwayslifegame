@@ -1,4 +1,11 @@
 .page {
+    
+    &.patterns-add {
+        @apply  flex flex-col;
+
+        background:#3A4454 !important; 
+    }
+
     min-height: 100vh;
     padding-left: 4%;
     padding-top: 3%;
@@ -26,5 +33,5 @@
             font-size: 2em;
             font-family: 'fredoka';
         }
-    }
+    }  
 }

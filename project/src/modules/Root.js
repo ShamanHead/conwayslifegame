@@ -1,5 +1,5 @@
 import React from 'react'
-import Router from './Router'
+import Router from './Router/Router'
 import {useLocation} from "react-router-dom"
 import AnimatedOutlet from "./AnimatedOutlet"
 import {motion} from "framer-motion";

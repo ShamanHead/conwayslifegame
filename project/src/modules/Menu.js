@@ -4,14 +4,9 @@ export default class Menu extends React.Component {
     constructor(props) {
         super(props);
        
-        this.state = this.props.startupSettings 
+        this.state = this.props.startupSettings; 
 
-        this.componentRefs = {widthSet: React.createRef(), 
-                              heightSet: React.createRef(), 
-                              colorSet: React.createRef(), 
-                              borderOnSet: React.createRef(),
-                              borderColorSet: React.createRef()
-        }
+        this.icons = props.icons;
 
         this.buttons = 
             [
@@ -58,16 +53,24 @@ export default class Menu extends React.Component {
 
     render() {
         let buttons = this.buttons.map((el) => {
-            return [<div className="button-icon" onClick = {() => {this.props.setCanvasState(el.name)}}>{el.icon}</div>]
+            if(this.icons.includes(el.name)) {
+                return [<div className="button-icon" onClick = {() => {this.props.setCanvasState(el.name)}}>{el.icon}</div>]
+            }
         })
 
+        let generation = [];
+
+        if(this.state.showGeneration === true) {
+            generation = [<span className="generationCount">{this.props.generationCount}</span>];
+        }
+    
         return (
             <div className="mt-7 w-full flex flex-col items-center">
                 <div className="flex flex-wrap flex-col items-center md:w-3/6">
-                    <div className="flex w-52 justify-between">
+                    <div className="flex w-52 justify-center">
                         {buttons}
-                    </div>                    
-                    <span className="generationCount">{this.props.generationCount}</span>
+                    </div>
+                    {generation}
                 </div>
             </div>
         )

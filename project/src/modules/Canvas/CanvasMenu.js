@@ -1,7 +1,6 @@
 import React from 'react';
-import Menu from './Menu';
+import Menu from '../Menu';
 import Canvas from './Canvas';
-import Dialog from './Dialog';
 
 /**
  * Main App class. 
@@ -18,15 +17,22 @@ export default class CanvasMenu extends React.Component {
             updateCanvas : "",
             onUpdateCanvas: "",
             generationCount: 0,
+            type: props.type ? props.type : "relative",
             settingsCanvas: {
-                widthSet: width, 
-                heightSet: height,
+                sizeSet: props.size ? props.size : {width: 6, height: 6},
+                widthSet: props.width ? props.width : width, 
+                heightSet: props.height ? props.height : height,
                 colorSet: "rgba(245,221,221)",
-                borderOnSet: false,
-                borderColorSet: "#000"
+                borderOnSet: props.borderOnSet ? props.borderOnSet : false,
+                borderColorSet: props.colorSet ? props.colorSet : "gray",
+                startPrompt: props.startPrompt,
+                showGeneration: props.showGeneration !== undefined ? props.showGeneration : true
+            },
+            menu: {
+                icons: props.menuIcons ? props.menuIcons : ["start", "stop", "clear", "soup"]
             }
         })
-       
+      
         this.setSettingsState = this.setSettingsState.bind(this);
         this.updateGenerationCount = this.updateGenerationCount.bind(this);
         this.setOnUpdate = this.setOnUpdate.bind(this);
@@ -34,11 +40,15 @@ export default class CanvasMenu extends React.Component {
     }
 
     componentDidMount() {
-        window.addEventListener('resize', this.updateDimensions.bind(this));
+        if(this.state.type !== 'fixed') {
+            window.addEventListener('resize', this.updateDimensions.bind(this));
+        }
     }
 
     componentWillUnmount() {
-        window.removeEventListener('resize', this.updateDimensions.bind(this));
+        if(this.state.type !== 'fixed') {
+            window.removeEventListener('resize', this.updateDimensions.bind(this));
+        }
     }
 
     updateGenerationCount(count) {
@@ -92,16 +102,17 @@ export default class CanvasMenu extends React.Component {
     render() {
         return (
             <div className="canvas-menu flex mt-5 items-center flex-col">
-                <Canvas setOnUpdate={this.setOnUpdate}
-                        canvasState={this.state.updateCanvas}
-                        updateGenerationCount={this.updateGenerationCount}
-                        startupSettings={this.state.settingsCanvas}
-                />
+                
+                <Canvas 
+                    setOnUpdate={this.setOnUpdate}
+                    updateGenerationCount={this.updateGenerationCount}
+                    startupSettings={this.state.settingsCanvas}/>
                 <Menu setCanvasState={this.setCanvasState}
                       generationCount={this.state.generationCount}
                       setSettingsState={this.setSettingsState}
-                      startupSettings={this.state.settingsCanvas}  
-                /> 
+                      startupSettings={this.state.settingsCanvas} 
+                      icons={this.state.menu.icons}
+                />
             </div>
         )
     }

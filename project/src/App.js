@@ -1,20 +1,18 @@
-import CanvasMenu from './modules/CanvasMenu';
-import RouteError from './modules/RouteError';
+import CanvasMenu from './modules/Canvas/CanvasMenu';
+import RouteError from './modules/Router/RouteError';
 import Root from './modules/Root';
 import Page from './modules/Page';
 import {pages} from './modules/Pages';
 import PatternsSearch from './modules/Patterns/PatternsSearch'
+import PatternAdd from './modules/Patterns/Add/PatternAdd'
 
 import {
   createBrowserRouter,
   RouterProvider,
-  useLocation
 } from "react-router-dom";
 
-import { TransitionGroup, CSSTransition } from 'react-transition-group'
-
 import './css/index.css'
-import './css/CanvasMenu.scss'
+import './css/Global.scss'
 import './css/Router.scss'
 import './css/Fonts.scss'
 import './css/RouteError.scss'
@@ -31,7 +29,7 @@ const router = createBrowserRouter([
             [
                 {
                     path: "/",
-                    element: <CanvasMenu/>
+                    element: <CanvasMenu startPrompt="life"/>
                 },
                 {
                     index: true,
@@ -41,7 +39,12 @@ const router = createBrowserRouter([
                 {
                     index: true,
                     path: "patterns",
-                    element: <PatternsSearch/>,
+                    element: <PatternsSearch/>, 
+                },
+                {
+                    index: true,
+                    path: "patterns/add",
+                    element: <PatternAdd/>
                 }
             ]
     }

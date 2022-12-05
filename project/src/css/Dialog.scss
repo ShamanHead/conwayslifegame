@@ -22,8 +22,17 @@
     }
 
     .dialog-window {
-        @apply flex flex-col items-center absolute w-full h-full md:w-4/6 md:h-3/6;
+        @apply flex flex-col items-center absolute md-max:w-full md-max:h-full;
 
+        &__title {
+            @apply mt-5;
+
+            font-size: 1.3em;
+            font-family: "fredoka";
+        }
+
+        width: 800px;
+        min-height: 70%;
         border-radius: 10px;
         background-color: #3A4454;
         z-index: 2;

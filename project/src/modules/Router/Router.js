@@ -1,7 +1,7 @@
 import React from 'react'
 import { fallDown as Menu } from 'react-burger-menu';
 import { Outlet, Link, NavLink } from "react-router-dom";
-import CanvasMenu from './CanvasMenu'
+import CanvasMenu from '../Canvas/CanvasMenu'
 
 export default class Router extends React.Component {
     constructor(props) {
