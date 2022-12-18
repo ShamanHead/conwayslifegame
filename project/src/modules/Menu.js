@@ -34,21 +34,48 @@ export default class Menu extends React.Component {
     }
 
     handleChange(e) {
+        let mountedState = this.state;
+
         this.setState({
             [e.nativeEvent.target.name] : 
                 e.nativeEvent.target.type === "checkbox" ?
                 e.nativeEvent.target.checked : e.nativeEvent.target.value
         })
+
+        mountedState[e.nativeEvent.target.name] = 
+            e.nativeEvent.target.type === "checkbox" ?
+            e.nativeEvent.target.checked : e.nativeEvent.target.value
+
+        this.props.setSettingsState(mountedState);
     }
 
     handleInnerChange(e, type) {
+        let mountedState = this.state;
+
         if(type) {
-            this.setState({[type]: e}); 
-        } else this.setState(
-            {
-                [ e.currentTarget.getAttribute('changeType')] : e.currentTarget.value 
+            this.setState({[type]: e});
+            mountedState[type] = e;
+        } else {
+            let type = e.currentTarget.getAttribute('changeType'); 
+            if(type === 'sizeSet') {
+                this.setState(
+                {
+                    sizeSet : {width: e.currentTarget.value, height: e.currentTarget.value} 
+                }
+                );
+            mountedState.sizeSet = {width: e.currentTarget.value, height: e.currentTarget.value};
+            } else {
+                this.setState(
+                {
+                    [e.currentTarget.getAttribute('changeType')] : e.currentTarget.value 
+                }
+                );
+
+                mountedState[e.currentTarget.getAttribute('changeType')] = e.currentTarget.value;
             }
-        ); 
+        }
+
+        this.props.setSettingsState(mountedState);
     }
 
     render() {
@@ -65,14 +92,94 @@ export default class Menu extends React.Component {
         }
     
         return (
-            <div className="mt-7 w-full flex flex-col items-center">
-                <div className="flex flex-wrap flex-col items-center md:w-3/6">
+            <div class="menu">
+                <div className="icons">
                     <div className="flex w-52 justify-center">
                         {buttons}
                     </div>
                     {generation}
                 </div>
+                <div className="settings">
+                    <div className="setting"> 
+                        <div>Width</div>
+                        <div>
+                            {this.state.widthSet}
+                            <input
+                                type="range"
+                                className="
+                                  form-range
+                                  w-full
+                                  h-6
+                                  p-0
+                                  focus:outline-none focus:ring-0 focus:shadow-none
+                                "
+                                id="customRange1"
+                                min="10"
+                                max="2000"
+                                step="10"
+                                changetype="widthSet"
+                                value={this.state.widthSet}
+                                onChange={this.handleInnerChange.bind(this)}
+                            /> 
+                        </div>
+                    </div>
+                    <div className="setting"> 
+                        <div>Height</div>
+                        <div>
+                            {this.state.heightSet}
+                            <input
+                                type="range"
+                                className="
+                                  form-range
+                                  w-full
+                                  h-6
+                                  p-0
+                                  focus:outline-none focus:ring-0 focus:shadow-none
+                                "
+                                id="customRange1"
+                                min="10"
+                                max="2000"
+                                step="10"
+                                value={this.state.heightSet}
+                                changetype="heightSet"
+                                onChange={this.handleInnerChange.bind(this)}
+                            /> 
+
+                        </div>
+                    </div>
+                    <div className="setting"> 
+                        <div>Cell size</div>
+                        <div>
+                            {this.state.sizeSet.width}
+                            <input
+                                type="range"
+                                className="
+                                  form-range
+                                  w-full
+                                  h-6
+                                  p-0
+                                  focus:outline-none focus:ring-0 focus:shadow-none
+                                "
+                                id="customRange1"
+                                min="5"
+                                max="15"
+                                step="1"
+                                value={this.state.sizeSet.width}
+                                changetype="sizeSet"
+                                onChange={this.handleInnerChange.bind(this)}
+                            /> 
+
+                        </div>
+                    </div>
+                    <div className="setting">
+                        <div>Border</div>
+                        <div>
+                            <input type="checkbox" id="borderOn" checked={this.state.borderOnSet} name="borderOnSet" onChange = {(e) => {this.handleChange(e)}}/>
+                        </div>
+                    </div>
+                </div>
             </div>
+            
         )
     }
 }

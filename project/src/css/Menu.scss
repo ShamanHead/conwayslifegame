@@ -1,0 +1,15 @@
+.menu {
+    @apply w-full flex flex-col items-center; 
+
+    .icons {
+        @apply mt-7 flex flex-wrap flex-col items-center md:w-3/6;  
+    }
+
+    .settings {
+        @apply flex flex-col md:flex-row w-full justify-center;
+
+        .setting {
+            @apply m-8;
+        }
+    }
+}

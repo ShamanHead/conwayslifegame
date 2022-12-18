@@ -5,7 +5,6 @@ import {
     useRef
 } from "react";
 import PatternItem from "./PatternItem"
-import {cells} from '../testCells';
 import { Outlet, Link, NavLink } from "react-router-dom";
 
 export default function PatternsSearch() {
@@ -41,10 +40,13 @@ export default function PatternsSearch() {
                 let result = [];
 
                 for(let i = 0;i < response.data.length;i++) {
-                    let item = response.data[i];
+                    let item = response.data[i],
+                        cells = JSON.parse(item.content);
+
+                    console.log(cells);
 
                     result.push(
-                        <PatternItem cells={cells} name={item.name} tags={item.tags}/>
+                        <PatternItem id={item.id} cells={cells} name={item.name} tags={item.tags}/>
                     );
                 }
                 
@@ -52,10 +54,6 @@ export default function PatternsSearch() {
 
             })
     }, [])
-
-    //for(let i = 0;i < 20;i++){ 
-    //    result.push([<PatternItem cells={cells} name="Glide" tags="Such"/>]) 
-    //}
 
     return (
         <div class="patterns page">

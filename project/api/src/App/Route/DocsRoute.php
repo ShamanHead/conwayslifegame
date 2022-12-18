@@ -16,6 +16,7 @@ class DocsRoute extends Route {
  
         ob_start();
 
+
         ?>
             <!DOCTYPE html>
             <html lang="en">

@@ -14,7 +14,7 @@ class AddRoute extends \App\Route\Route {
     protected BodyType $bodyType = BodyType::JSON;
     protected array $args = 
         [
-            'name', 'contents'
+            'name', 'content'
         ];
 
     #[OA\Get(
@@ -33,9 +33,21 @@ class AddRoute extends \App\Route\Route {
         $addNewQuery = $DBH->prepare("INSERT INTO patterns (name, content) VALUES (?,?)");
         
         $addNewQuery->bindValue(1, $body['name']);
-        $addNewQuery->bindValue(2, $body['contents']);
+        $addNewQuery->bindValue(2, $body['content']);
 
         $addNewQuery->execute();
+
+        $id = $DBH->lastInsertId();
+        
+        if(!empty($body['tags'])) { 
+            foreach($body['tags'] as $tag) {
+                $addTagsToPatterQuery = $DBH->prepare("INSERT INTO tags_to_patterns (tag_id, pattern_id) VALUES (?, ?)");
+                $addTagsToPatterQuery->bindValue(1, $tag);
+                $addTagsToPatterQuery->bindValue(2, $id);
+
+                $addTagsToPatterQuery->execute();
+            }
+        }
 
         $response->getBody()->write(JSON::generate(200, "OK"));
 

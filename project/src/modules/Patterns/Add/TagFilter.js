@@ -5,20 +5,18 @@ import {
     useMemo
 } from "react";
 
-export default function TagFilter(tag) {
+export default function TagFilter(props) {
    
     const [tagList, setTagList] = useState([]),
         [selectedList, setSelectedList] = useState([]),
-        [selectedFrontendList, setSelectedFrontendList] = useState([])
+        [selectedFrontendList, setSelectedFrontendList] = useState([]),
+        handlerUpdate = props.handlerUpdate
 
     useEffect(() => {
         fetch('http://localhost:81/tag/get')
             .then((response) => response.json())
             .then((response) => {
                 setTagList(response.data);
-            })
-            .then(() => {
-                
             })
     }, [])
     
@@ -60,6 +58,10 @@ export default function TagFilter(tag) {
 
         setSelectedFrontendList(frontend)
 
+        if(handlerUpdate !== null) {
+            handlerUpdate(selectedList)
+        }
+
         console.log(frontend); 
     }
 
@@ -98,7 +100,7 @@ export default function TagFilter(tag) {
 
     return (
         <div className="tag-list">
-            <input placeholder="Tag" onChange={handleInputChange} class="pattern-add-input mt-5 mb-5" />
+            <input placeholder="Tag" onChange={handleInputChange} class="tag-input mt-5 mb-5" />
             <div className="selected-tags">
                 {selectedFrontendList}
             </div> 

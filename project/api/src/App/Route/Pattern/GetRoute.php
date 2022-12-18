@@ -24,7 +24,7 @@ class GetRoute extends \App\Route\Route {
 
         $getQuery = $DBH->prepare(
             "
-            SELECT p.name, p.content AS tag_name 
+            SELECT p.name, p.content 
             FROM `patterns` AS p    
             WHERE p.id = ?
             "

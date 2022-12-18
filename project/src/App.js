@@ -17,6 +17,7 @@ import './css/Router.scss'
 import './css/Fonts.scss'
 import './css/RouteError.scss'
 import './css/Page.scss'
+import './css/Menu.scss'
 import './css/Patterns.scss'
 import './css/Dialog.scss'
 
@@ -29,7 +30,12 @@ const router = createBrowserRouter([
             [
                 {
                     path: "/",
-                    element: <CanvasMenu startPrompt="life"/>
+                    element: <CanvasMenu/>
+                },
+                {
+                    index: true,
+                    path: "learn",
+                    element: <Page content={pages.learn}/>
                 },
                 {
                     index: true,
@@ -45,6 +51,14 @@ const router = createBrowserRouter([
                     index: true,
                     path: "patterns/add",
                     element: <PatternAdd/>
+                },
+                {
+                    index: true,
+                    path: "pattern/:code",
+                    loader: async ({params}) => {
+                        return fetch("http://localhost:81/pattern/get/" + params.code);  
+                    },
+                    element: <CanvasMenu/> 
                 }
             ]
     }

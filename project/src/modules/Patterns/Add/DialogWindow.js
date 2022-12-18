@@ -17,7 +17,7 @@ export default function DialogWindow (props)
                 borderOnSet={true}
                 showGeneration={false}
             />
-
+            html
             <input type="" placeholder="Name" class="pattern-dialog-input mt-5 mb-5" />
             <TagFilter/>
         </Dialog>

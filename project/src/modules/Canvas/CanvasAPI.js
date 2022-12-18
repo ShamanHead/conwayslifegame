@@ -47,6 +47,67 @@ export const clearCells = (screen) => {
     return temp;
 }
 
+export const normalize = (cells, screen) => {
+    let resultSet = [],
+        toRender = [],
+        currentHeight = cells.active.length,
+        currentWidth = cells.active[0].length
+
+    console.log(screen);
+
+    if(currentHeight < screen.height) {
+        let heightPoint = Math.round((screen.height - currentHeight) / 2),
+            widthPoint = Math.round((screen.width - currentWidth) / 2),
+            higherHeightPoint = screen.height - heightPoint,
+            higherWidthPoint = screen.width - widthPoint;
+
+        for(let i = 0;i < heightPoint;i++) {
+            resultSet[i] = [];
+
+            for(let j = 0; j < screen.width;j++) {
+                resultSet[i][j] = 0;
+            }
+        }
+
+
+        for(let i = heightPoint;i < higherHeightPoint;i++) {
+            resultSet[i] = [];
+
+            for(let j = 0; j < widthPoint;j++) {
+                resultSet[i][j] = 0;
+            }
+
+            for(let j = widthPoint; j < higherWidthPoint;j++) {
+                if(cells.active[i - heightPoint][j - widthPoint] === 1) {
+                    resultSet[i][j] = 1;
+                    toRender.push([i, j])
+                } else {
+                    resultSet[i][j] = 0;
+                }
+            }
+
+            for(let j = higherWidthPoint; j < screen.width;j++) {
+                resultSet[i][j] = 0;
+            }
+        }
+
+        for(let i = higherHeightPoint;i < screen.height;i++) {
+            resultSet[i] = [];
+
+            for(let j = 0; j < screen.width;j++) {
+                resultSet[i][j] = 0;
+            }
+        }
+    }
+
+    console.log(resultSet);
+
+    cells.active = resultSet;
+    cells.toRender = toRender;
+
+    return cells;
+}
+
 /**
  * Calculates new generation
  *
@@ -215,4 +276,41 @@ export const soup = (cellsRef, screen) => {
     }
 
     cellsRef.current = temp;
+}
+
+export const startUpdating = (
+        settings, 
+        screen, 
+        props, 
+        contextRef, 
+        cellsRef, 
+        modeRef, 
+        generationCountRef, 
+        intervalRef, 
+    redrawRef) => {
+
+    if(modeRef.current === 1) return 0;
+    modeRef.current = 1;
+
+    generationCountRef.current = 0;
+
+    intervalRef.current = 
+        setInterval(() => 
+            {
+                generationCountRef.current = cycle(cellsRef.current, generationCountRef.current, screen, props)
+            }, 32) 
+    redrawRef.current = 
+        setInterval(() => {
+            clear(contextRef, settings);
+            draw(contextRef, cellsRef, settings);
+        }
+        , 16)
+}
+
+export const stopUpdating = (modeRef, intervalRef, redrawRef) => {
+    if(modeRef.current === 0) return 0;
+    modeRef.current = 0;
+
+    clearInterval(intervalRef.current);
+    clearInterval(redrawRef.current);
 }

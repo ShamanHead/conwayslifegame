@@ -5,7 +5,19 @@ import {
     useRef,
 } from "react";
 
-import {onCell, clearCells, cycle, getPosition, draw, clear, soup} from './CanvasAPI'; 
+import 
+{
+    onCell, 
+    clearCells, 
+    cycle, 
+    getPosition, 
+    draw, 
+    clear, 
+    soup, 
+    startUpdating, 
+    stopUpdating,
+    normalize
+} from './CanvasAPI'; 
 
 export default function Canvas (props) {
 
@@ -19,28 +31,39 @@ export default function Canvas (props) {
     const [settings, updateSettings] = useState(props.startupSettings),
         [screen, setScreen] = useState({
             width: 
-                settings.widthSet / 
-                settings.sizeSet.width, 
+                Math.round(
+                    settings.widthSet / 
+                    settings.sizeSet.width
+                ), 
             height: 
-                settings.heightSet / 
-                settings.sizeSet.height
+                Math.round(
+                    settings.heightSet / 
+                    settings.sizeSet.height
+                )
         }),
         [lastMouseCords, setLastMouseCords] = useState([0,0]),
         [drawGeneration, setDrawGeneration] = useState(false),
-        [generationCount, setGenerationCount] = useState(0),
         root = useRef();
 
     const onUpdateState = (state) => {
         switch(state) {
             case "start" :
-                startUpdating();
+                startUpdating(settings, 
+                    screen, 
+                    props, 
+                    contextRef, 
+                    cellsRef, 
+                    modeRef, 
+                    generationCountRef, 
+                    intervalRef, 
+                    redrawRef);
                 break;
             case "stop" :
-                stopUpdating();
+                stopUpdating(modeRef, intervalRef, redrawRef);
                 break;
             case "clear" :
                 cellsRef.current = clearCells(screen);
-                stopUpdating();
+                stopUpdating(modeRef, intervalRef, redrawRef);
                 clear(contextRef, settings)
                 draw(contextRef, cellsRef, settings);
                 break;
@@ -54,52 +77,31 @@ export default function Canvas (props) {
     onUpdateSettings = (newSettings) => {
         let screenNew = {
             width: 
-                settings.widthSet / 
-                settings.sizeSet.width, 
+                newSettings.widthSet / 
+                newSettings.sizeSet.width, 
             height: 
-                settings.heightSet / 
-                settings.sizeSet.height
+                newSettings.heightSet / 
+                newSettings.sizeSet.height
         }
- 
-        cellsRef.current = clearCells(screenNew);
 
+        updateSettings(newSettings);
+
+        cellsRef.current = clearCells(screenNew);
+ 
         contextRef.current = root.current.getContext("2d");
+        
+        clear(contextRef, settings)
+        draw(contextRef, cellsRef, newSettings);
 
         setScreen({
             width: 
-                settings.widthSet / 
-                settings.sizeSet.width, 
+                newSettings.widthSet / 
+                newSettings.sizeSet.width, 
             height: 
-                settings.heightSet / 
-                settings.sizeSet.height
+                newSettings.heightSet / 
+                newSettings.sizeSet.height
         });
-    }
-
-    const startUpdating = () => {
-        if(modeRef.current === 1) return 0;
-        modeRef.current = 1;
-
-        generationCountRef.current = 0;
-
-        intervalRef.current = 
-            setInterval(() => 
-                {
-                    generationCountRef.current = cycle(cellsRef.current, generationCountRef.current, screen, props)
-                }, 32) 
-        redrawRef.current = 
-            setInterval(() => {
-                clear(contextRef, settings);
-                draw(contextRef, cellsRef, settings);
-            }
-            , 16)
-    },
-    stopUpdating = () => {
-        if(modeRef.current === 0) return 0;
-        modeRef.current = 0;
-
-        clearInterval(intervalRef.current);
-        clearInterval(redrawRef.current);
-    }
+    } 
 
     const onMouseUp = (e) => {
         setDrawGeneration(false); 
@@ -115,6 +117,7 @@ export default function Canvas (props) {
             clear(contextRef, settings);
             onCell(pos, cellsRef.current);  
             draw(contextRef, cellsRef, settings);
+            settings.returnCells(cellsRef)
         }
     },
     onMouseDown = (e) => {
@@ -126,15 +129,25 @@ export default function Canvas (props) {
         clear(contextRef, settings); 
         onCell(pos, cellsRef.current);  
         draw(contextRef, cellsRef, settings);
+        settings.returnCells(cellsRef)
     }
 
     useEffect(() => {
         clearCells(screen);
         contextRef.current = root.current.getContext("2d"); 
-        cellsRef.current = clearCells(screen); 
+
+        if(props.cells !== null && props.cells !== undefined) {
+            let cells = JSON.parse(JSON.parse(props.cells).data.content)
+            cellsRef.current = normalize(cells, screen);
+            clearCells(screen);
+        } else {
+            cellsRef.current = clearCells(screen); 
+        }
+        clear(contextRef, settings)
+        draw(contextRef, cellsRef, settings);
         modeRef.current = 0;
         props.setOnUpdate(onUpdateState, onUpdateSettings);
-    }, settings) 
+    }, [settings]) 
 
     return (
         <canvas id="canvas" 
